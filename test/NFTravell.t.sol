@@ -2,12 +2,13 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {NFTravell} from "../src/NFTravell.sol";
+import {NFTravellPublic} from "./contracts/NFTravellPublic.sol";
 import {PriceFeed} from "../src/PriceFeed.sol";
-import { MockPriceFeed} from "./mocks/MockPriceFeed.sol";
+import {INFTravellErrors} from "../src/interfaces/INFTravellErrors.sol";
+import {MockPriceFeed} from "./mocks/MockPriceFeed.sol";
 
 contract NFTravellTest is Test {
-    NFTravell public nftravell;
+    NFTravellPublic public nftravell;
     PriceFeed public priceFeed;
     MockPriceFeed public mockPriceFeed;
     string public name = "NFTravell";
@@ -18,7 +19,7 @@ contract NFTravellTest is Test {
     function setUp() public {
         mockPriceFeed = new MockPriceFeed(answer);
         priceFeed = new PriceFeed(address(mockPriceFeed));
-        nftravell = new NFTravell(address(priceFeed), tokenPrice, name, symbol);
+        nftravell = new NFTravellPublic(address(priceFeed), tokenPrice, name, symbol);
         vm.warp(1 days * 365 * 2);
     }
 
@@ -29,7 +30,7 @@ contract NFTravellTest is Test {
 
     function test_mint(address sender) public {
         vm.assume(sender != address(0));
-        uint256 value = uint256(answer) * tokenPrice;
+        uint256 value = _value();
         vm.deal(sender, value);
         vm.prank(sender);
 
@@ -37,5 +38,24 @@ contract NFTravellTest is Test {
         assertEq(nftravell.balanceOf(sender), 1);
     }
 
+    function test_RevertIfValueIsZero() public {
+        vm.expectRevert(INFTravellErrors.InvalidValue.selector);
+        nftravell.mint{value: 0}();
+    }
+
+    function test_RevertIfTokenIsMinted() public {
+        nftravell.mint{value: _value()}();
+        vm.expectRevert(INFTravellErrors.AlreadyMinted.selector);
+        nftravell.mint{value: _value()}();
+    }
+
+    function test_RevertIfValueIsIncorrect() public {
+        vm.expectRevert(INFTravellErrors.IncorrectValue.selector);
+        nftravell.mint{value: _value() + 1}();
+    }
+
+    function _value() internal view returns (uint256) {
+        return uint256(answer) * tokenPrice;
+    }
     // TODO: add more tests
 }
