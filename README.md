@@ -1,66 +1,48 @@
-## Foundry
+## NFT Travell
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
+This is a project to demonstrate the use of [Chainlink Data Feeds](https://docs.chain.link/data-feeds).
 
 ## Usage
+
+### Clone repository
+
+```shell
+$ cd your-path
+$ git clone https://github.com/juaaanmac/nftravell.git
+$ cd roll-the-tokens
+```
+
+### Install dependencies
+
+```shell
+$ make install
+```
 
 ### Build
 
 ```shell
-$ forge build
+$ make build
 ```
 
 ### Test
 
 ```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
+$ make test
 ```
 
 ### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
+1) Create a copy of .env.example file and rename it as .env. 
+2) Set the values.
+3) Run:
 
 ```shell
-$ cast <subcommand>
+$ make deploy
 ```
 
-### Help
+### Usage
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+1) Get the price of the current coin using the `PriceFeed` deployed contract. Call `getChainlinkDataFeedLatestAnswer` to get the value in weis.
+2) Multiply the value obtained by the value of the token defined in the `NFTravell` contract, and convert it to ethers.
+3) Call mint function in `NFTravell`, passing the calculated value as `value`.
+4) You will get a nft to use as a pass in you vacations 😁.
