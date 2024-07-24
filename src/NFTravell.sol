@@ -60,7 +60,7 @@ contract NFTravell is ERC721, Ownable, INFTravellErrors {
     }
 
     function _currentYear() internal view returns (uint256) {
-        return block.timestamp / 31557600;
+        return block.timestamp / 31557600 + 1970;
     }
 
     function _checkValue() internal view {
