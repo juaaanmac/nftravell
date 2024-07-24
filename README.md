@@ -9,7 +9,7 @@ This is a project to demonstrate the use of [Chainlink Data Feeds](https://docs.
 ```shell
 $ cd your-path
 $ git clone https://github.com/juaaanmac/nftravell.git
-$ cd roll-the-tokens
+$ cd nftravell
 ```
 
 ### Install dependencies
