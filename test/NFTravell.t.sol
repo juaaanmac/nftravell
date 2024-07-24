@@ -26,6 +26,7 @@ contract NFTravellTest is Test {
     function test_deploy() public view {
         assertEq(nftravell.name(), name);
         assertEq(nftravell.symbol(), symbol);
+        assertEq(nftravell.tokenPrice(), tokenPrice);
     }
 
     function test_mint(address sender) public {
@@ -35,7 +36,10 @@ contract NFTravellTest is Test {
         vm.prank(sender);
 
         nftravell.mint{value: value}();
-        assertEq(nftravell.balanceOf(sender), 1);
+        assertEq(nftravell.balanceOf(sender), 1, "balance of sender should be 1");
+        assertEq(nftravell.ownerOf(1), sender, "owner of token 1 should be sender");
+        assertEq(nftravell.tokenId(), 1, "token id should be 1");
+        assertEq(nftravell.balance(), value, "balance should be `value`");
     }
 
     function test_RevertIfValueIsZero() public {
@@ -54,8 +58,13 @@ contract NFTravellTest is Test {
         nftravell.mint{value: _value() + 1}();
     }
 
+    function test_RevertIfUserWantsToTransfer() public {
+        nftravell.mint{value: _value()}();
+        vm.expectRevert(INFTravellErrors.NotAllowedOperation.selector);
+        nftravell.transferFrom(address(nftravell), address(10), 1);
+    }
+
     function _value() internal view returns (uint256) {
         return uint256(answer) * tokenPrice;
     }
-    // TODO: add more tests
 }
