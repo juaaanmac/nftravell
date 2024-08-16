@@ -14,7 +14,7 @@ contract NFTravell is ERC721, Ownable, INFTravellErrors {
 
     mapping(address => mapping(uint256 => bool)) internal _minted;
 
-    event TokenMinted(address indexed user, uint256 indexed year, uint256 indexed tokenId);
+    event TokenMinted(address indexed user, uint256 indexed year, uint256 tokenId);
     event Withdrawn(uint256 indexed amount);
 
     constructor(address priceFeed, uint256 tokenPrice, string memory name, string memory symbol)
