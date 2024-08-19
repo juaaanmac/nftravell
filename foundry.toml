@@ -2,9 +2,3 @@
 src = "src"
 out = "out"
 libs = ["lib"]
-
-[rpc_endpoints]
-sepolia = "https://eth-sepolia.g.alchemy.com/v2/sYhp1JkKk9EGwLA6bq38TEs-RPxLEnC3"
-
-[etherscan]
-sepolia = { key = "${SEPOLIA_API_KEY}" }
