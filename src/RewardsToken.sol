@@ -37,7 +37,7 @@ contract RewardsToken is ERC20, Ownable {
         uint256 daysPerYeear = 365;
 
         /**
-         * by doing the division before the multiplication, I get the timestamp of the first day 
+         * by doing the division before the multiplication, I get the timestamp of the first day
          * of the current year and then I get the number of seconds elapsed until that day
          */
         uint256 dias = (block.timestamp / secondsPerYear) * secondsPerYear;

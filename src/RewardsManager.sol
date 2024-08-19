@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {IReactive} from './interfaces/IReactive.sol';
-import {ISubscriptionService} from './interfaces/ISubscriptionService.sol';
+import {IReactive} from "./interfaces/IReactive.sol";
+import {ISubscriptionService} from "./interfaces/ISubscriptionService.sol";
 
 contract RewardsManager is IReactive {
     event Event(
@@ -63,39 +63,25 @@ contract RewardsManager is IReactive {
         uint256 topic_2,
         uint256 topic_3,
         bytes calldata data,
-        uint256 /* block_number */,
+        uint256, /* block_number */
         uint256 /* op_code */
     ) external vmOnly {
         emit Event(chain_id, _contract, topic_0, topic_1, topic_2, topic_3, data, ++counter);
 
         // Reward ERC20 tokens to the user who acquired a NFT pass
         bytes memory payload = abi.encodeWithSignature("reward(address)", address(uint160(topic_1)));
-        
+
         emit Callback(chain_id, _callback, GAS_LIMIT, payload);
     }
 
     // Methods for testing environment only
 
     function subscribe(address _contract, uint256 topic_0) external {
-        service.subscribe(
-            SEPOLIA_CHAIN_ID,
-            _contract,
-            topic_0,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE
-        );
+        service.subscribe(SEPOLIA_CHAIN_ID, _contract, topic_0, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE);
     }
 
     function unsubscribe(address _contract, uint256 topic_0) external {
-        service.unsubscribe(
-            SEPOLIA_CHAIN_ID,
-            _contract,
-            topic_0,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE,
-            REACTIVE_IGNORE
-        );
+        service.unsubscribe(SEPOLIA_CHAIN_ID, _contract, topic_0, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE);
     }
 
     function resetCounter() external {
