@@ -6,7 +6,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract RewardsToken is ERC20, Ownable {
     uint256 internal _rewardAmount = 100;
-    address internal _callbackSender;
+    address private _callbackSender;
 
     modifier onlyReactive() {
         if (_msgSender() != _callbackSender ) {
@@ -24,6 +24,10 @@ contract RewardsToken is ERC20, Ownable {
         _callbackSender = callbackSender_;
     }
 
+    function setCallbackSender(address callbackSender) public onlyOwner {
+        _callbackSender = callbackSender;
+    }
+    
     function reward(address account) external onlyReactive() {
         _mint(account, _rewardAmount);
     }
