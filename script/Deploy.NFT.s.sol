@@ -12,10 +12,9 @@ contract DeployNFTScript is Script {
         uint256 deployerPrivateKey = vm.envUint("ADMIN_PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        address priceFeedAddress = vm.envAddress("SEPOLIA_PRICE_FEED");
-        PriceFeed priceFeed = new PriceFeed(priceFeedAddress);
+        address priceFeedAddress = vm.envAddress("PRICE_FEED_ADDR");
 
-        new NFTravell(address(priceFeed), 2, "Villa la Angostura Token", "VLAT");
+        new NFTravell(priceFeedAddress, 2, "Villa la Angostura Token", "VLAT");
 
         vm.stopBroadcast();
     }
