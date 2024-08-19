@@ -12,9 +12,9 @@ build:; forge build
 
 test :; forge test 
 
-deploy-nft :; forge script --chain sepolia script/Deploy.NFT.s.sol:DeployNFTScript --rpc-url ${SEPOLIA_RPC_URL} --broadcast --verify -vvvv
+deploy-nft :; forge script script/Deploy.NFT.s.sol:DeployNFTScript --rpc-url sepolia --broadcast --verify -vvvv
 
-deploy-rewards :; forge script --chain sepolia script/Deploy.Rewards.s.sol:DeployRewardsScript --rpc-url ${SEPOLIA_RPC_URL} --broadcast --verify -vvvv
+deploy-rewards :; forge script script/Deploy.Rewards.s.sol:DeployRewardsScript --rpc-url sepolia --broadcast --verify -vvvv
 
 deploy-react :; forge create --rpc-url ${REACTIVE_RPC_URL} --private-key ${REACTIVE_PRIVATE_KEY} src//RewardsManager.sol:RewardsManager --constructor-args ${REACTIVE_SYSTEM_CONTRACT_ADDR} ${NFT_ADDR} 0x96234cb3d6c373a1aaa06497a540bc166d4b0359243a088eaf95e21d7253d0be ${REWARDS_ADDR}
 
