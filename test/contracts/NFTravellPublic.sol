@@ -19,4 +19,8 @@ contract NFTravellPublic is NFTravell {
     function tokenId() public view returns (uint256) {
         return _tokenId;
     }
+
+    function currentYear() public view returns (uint256) {
+        return _currentYear();
+    }
 }

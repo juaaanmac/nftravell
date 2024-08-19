@@ -52,11 +52,12 @@ contract NFTravell is ERC721, Ownable, INFTravellErrors {
     }
 
     function withdraw() external virtual onlyOwner {
+        uint256 oldBalance = _balance;
         payable(owner()).transfer(_balance);
 
         _balance = 0;
 
-        emit Withdrawn(_balance);
+        emit Withdrawn(oldBalance);
     }
 
     function _currentYear() internal view returns (uint256) {
