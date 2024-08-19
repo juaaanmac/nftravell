@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {NFTravell} from "../../src/NFTravell.sol";
 
-contract NFTravellPublic is NFTravell {
+contract NFTravellHarness is NFTravell {
     constructor(address _priceFeed, uint256 _tokenPrice, string memory _name, string memory _symbol)
         NFTravell(_priceFeed, _tokenPrice, _name, _symbol)
     {}

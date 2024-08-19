@@ -2,13 +2,13 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {NFTravellPublic} from "./contracts/NFTravellPublic.sol";
+import {NFTravellHarness} from "./contracts/NFTravellHarness.sol";
 import {PriceFeed} from "../src/PriceFeed.sol";
 import {INFTravellErrors} from "../src/interfaces/INFTravellErrors.sol";
 import {MockPriceFeed} from "./mocks/MockPriceFeed.sol";
 
 contract NFTravellTest is Test {
-    NFTravellPublic public nftravell;
+    NFTravellHarness public nftravell;
     PriceFeed public priceFeed;
     MockPriceFeed public mockPriceFeed;
     string public name = "NFTravell";
@@ -25,7 +25,7 @@ contract NFTravellTest is Test {
         mockPriceFeed = new MockPriceFeed(answer);
         priceFeed = new PriceFeed(address(mockPriceFeed));
         vm.prank(admin);
-        nftravell = new NFTravellPublic(address(priceFeed), tokenPrice, name, symbol);
+        nftravell = new NFTravellHarness(address(priceFeed), tokenPrice, name, symbol);
         vm.warp(1 days * 365 * 2);
     }
 
@@ -38,13 +38,13 @@ contract NFTravellTest is Test {
     function test_deployRevertsIfTokenPriceIsInvalid() public {
         uint256 invalidTokenPrice = 0;
         vm.expectRevert("Invalid token price");
-        new NFTravellPublic(address(priceFeed), invalidTokenPrice, name, symbol);
+        new NFTravellHarness(address(priceFeed), invalidTokenPrice, name, symbol);
     }
 
     function test_deployRevertsIfPriceFeedIsInvalid() public {
         address invalidPriceFeed = address(0);
         vm.expectRevert("Invalid PriceFeed address");
-        new NFTravellPublic(invalidPriceFeed, tokenPrice, name, symbol);
+        new NFTravellHarness(invalidPriceFeed, tokenPrice, name, symbol);
     }
 
     function test_Mint(address sender) public {
