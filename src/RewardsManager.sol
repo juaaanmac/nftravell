@@ -17,23 +17,17 @@ contract RewardsManager is IReactive {
     );
 
     uint256 private constant REACTIVE_IGNORE = 0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad;
-
     uint256 private constant SEPOLIA_CHAIN_ID = 11155111;
-
     uint64 private constant GAS_LIMIT = 1000000;
 
-    /**
-     * Indicates whether this is a ReactVM instance of the contract.
-     */
+    // Indicates whether this is a ReactVM instance of the contract.
     bool private vm;
 
     // State specific to reactive network instance of the contract
-
     ISubscriptionService private service;
     address private _callback;
 
     // State specific to ReactVM instance of the contract
-
     uint256 public counter;
 
     constructor(address service_address, address _contract, uint256 topic_0, address callback) {
@@ -61,7 +55,6 @@ contract RewardsManager is IReactive {
     }
 
     // Methods specific to ReactVM instance of the contract
-
     function react(
         uint256 chain_id,
         address _contract,
@@ -74,7 +67,10 @@ contract RewardsManager is IReactive {
         uint256 /* op_code */
     ) external vmOnly {
         emit Event(chain_id, _contract, topic_0, topic_1, topic_2, topic_3, data, ++counter);
-        bytes memory payload = abi.encodeWithSignature("reward(address)", address(1));
+
+        // Reward ERC20 tokens to the user who acquired a NFT pass
+        bytes memory payload = abi.encodeWithSignature("reward(address)", address(uint160(topic_1)));
+        
         emit Callback(chain_id, _callback, GAS_LIMIT, payload);
     }
 
