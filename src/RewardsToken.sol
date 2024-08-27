@@ -3,8 +3,11 @@ pragma solidity ^0.8.13;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import {ERC20Votes} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
+import {Nonces} from "@openzeppelin/contracts/utils/Nonces.sol";
 
-contract RewardsToken is ERC20, Ownable {
+contract RewardsToken is ERC20, Ownable, ERC20Permit, ERC20Votes {
     address internal _callbackSender;
 
     modifier onlyReactive() {
@@ -19,6 +22,7 @@ contract RewardsToken is ERC20, Ownable {
     constructor(string memory name_, string memory symbol_, address callbackSender_)
         ERC20(name_, symbol_)
         Ownable(_msgSender())
+        ERC20Permit(name_)
     {
         _callbackSender = callbackSender_;
     }
@@ -29,6 +33,14 @@ contract RewardsToken is ERC20, Ownable {
 
     function reward(address account) external onlyReactive {
         _mint(account, _rewardAmount());
+    }
+
+    function nonces(address owner) public view virtual override(ERC20Permit, Nonces) returns (uint256) {
+        return super.nonces(owner);
+    }
+
+    function _update(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
+        super._update(from, to, amount);
     }
 
     function _rewardAmount() internal view returns (uint256) {
