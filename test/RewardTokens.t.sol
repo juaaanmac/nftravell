@@ -10,13 +10,14 @@ contract RewardTokensTest is Test {
     string public name = "NFTravell";
     string public symbol = "NFTV";
     uint256 public tokenPrice = 10;
+    uint256 public tokensPerDay = 1;
     int256 public answer = 10000;
     address public admin = address(10);
     address public user = address(11);
     address public callbackSender = address(20);
 
     function setUp() public {
-        rewardsToken = new RewardsTokenHarness(name, symbol, callbackSender);
+        rewardsToken = new RewardsTokenHarness(name, symbol, tokensPerDay, callbackSender);
     }
 
     function test_deploy() public view {

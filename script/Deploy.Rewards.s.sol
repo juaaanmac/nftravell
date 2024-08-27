@@ -13,7 +13,7 @@ contract DeployRewardsScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        new RewardsToken("Neuquen Rewards Token", "NQNR", callbackSenderAddress);
+        new RewardsToken("Neuquen Rewards Token", "NQNR", 1, callbackSenderAddress);
 
         vm.stopBroadcast();
     }

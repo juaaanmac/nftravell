@@ -9,6 +9,7 @@ import {Nonces} from "@openzeppelin/contracts/utils/Nonces.sol";
 
 contract RewardsToken is ERC20, Ownable, ERC20Permit, ERC20Votes {
     address internal _callbackSender;
+    uint256 internal _tokensPerDay;
 
     modifier onlyReactive() {
         if (_msgSender() != _callbackSender) {
@@ -18,17 +19,26 @@ contract RewardsToken is ERC20, Ownable, ERC20Permit, ERC20Votes {
     }
 
     error InvalidCallabackSender(address sender);
+    error InvalidTokensPerDay(uint256);
 
-    constructor(string memory name_, string memory symbol_, address callbackSender_)
+    constructor(string memory name_, string memory symbol_, uint256 tokensPerDay_, address callbackSender_)
         ERC20(name_, symbol_)
         Ownable(_msgSender())
         ERC20Permit(name_)
     {
         _callbackSender = callbackSender_;
+        _tokensPerDay = tokensPerDay_;
     }
 
     function setCallbackSender(address callbackSender) public onlyOwner {
         _callbackSender = callbackSender;
+    }
+
+    function setTokensPerDay(uint256 tokensPerDay) public onlyOwner {
+        if (tokensPerDay == 0) {
+            revert InvalidTokensPerDay(tokensPerDay);
+        }
+        _tokensPerDay = tokensPerDay;
     }
 
     function reward(address account) external onlyReactive {
@@ -57,6 +67,6 @@ contract RewardsToken is ERC20, Ownable, ERC20Permit, ERC20Votes {
         // get the number of days elapsed since the first day of the current year
         uint256 daysElapsed = (block.timestamp - dias) / secondsPerDay + 1;
 
-        return daysPerYeear - daysElapsed;
+        return (daysPerYeear - daysElapsed) * _tokensPerDay;
     }
 }
