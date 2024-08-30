@@ -13,7 +13,7 @@ import {IERC165} from "@openzeppelin/contracts/interfaces/IERC165.sol";
 
 contract TGovernor is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
     // Governor name
-    string constant NAME = "Governance";
+    string constant NAME = "RTGovernance";
 
     // Quorum as a percentage of the total token supply
     uint256 constant QUORUM = 4;
@@ -23,14 +23,6 @@ contract TGovernor is Governor, GovernorCountingSimple, GovernorVotes, GovernorV
     uint256 constant PROPOSAL_TRESHOLD = 0;
 
     constructor(address _token) Governor(NAME) GovernorVotes(IVotes(_token)) GovernorVotesQuorumFraction(QUORUM) {}
-
-    function quorumReached(uint256 proposalId) public view returns (bool) {
-        return _quorumReached(proposalId);
-    }
-
-    function voteSucceeded(uint256 proposalId) public view returns (bool) {
-        return _voteSucceeded(proposalId);
-    }
 
     function votingDelay() public pure override returns (uint256) {
         return VOTING_DELAY;
