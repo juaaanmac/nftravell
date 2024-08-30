@@ -13,4 +13,12 @@ contract RewardsTokenHarness is RewardsToken {
     function callbackSender() public view returns (address) {
         return _callbackSender;
     }
+
+    function rewardsPerDay() public view returns (uint256) {
+        return _tokensPerDay;
+    }
+
+    function mint(address account, uint256 amount) external {
+        _mint(account, amount);
+    }
 }
