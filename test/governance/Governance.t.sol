@@ -38,12 +38,19 @@ contract GovernanceTest is Test {
     function test_TokensPerDayChange(uint256 newTokensPerDay) public {
         vm.assume(newTokensPerDay != 0 && newTokensPerDay != initialTokensPerDay && newTokensPerDay < 20);
 
+        // proposal target => rewards token contract
         address[] memory targets = new address[](1);
         targets[0] = address(rewardsToken);
+
+        // no value
         uint256[] memory values = new uint256[](1);
         values[0] = 0;
+
+        // calldata => a call to setTokensPerDay function in target contract
         bytes[] memory calldatas = new bytes[](1);
         calldatas[0] = abi.encodeWithSignature("setTokensPerDay(uint256)", newTokensPerDay);
+
+        // description
         string memory description = "Proposal #1: Set token per day";
 
         // delegate votes to the same user
